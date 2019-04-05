@@ -20,10 +20,24 @@ public class PotassiumAuto extends LinearOpMode {
     private DcMotor lift = null;
     private Servo jewel = null;
 
-    left = hardwareMap
 
     @Override
     public void runOpMode() {
+        left = hardwareMap.get(DcMotor.class, "left");
+        right = hardwareMap.get(DcMotor.class, "right");
+        collection = hardwareMap.get(DcMotor.class, "collection");
+        lift = hardwareMap.get(DcMotor.class, "lift");
+        jewel = hardwareMap.get(Servo.class, "jewel");
 
+        Robot robot = new Robot(left, right, collection, lift, jewel);
+
+        waitForStart();
+
+        robot.forward(72);
+        robot.turn(-90);
+        robot.forward(63);
+        robot.turn(90);
+        robot.forward(47);
+        
     }
 }
