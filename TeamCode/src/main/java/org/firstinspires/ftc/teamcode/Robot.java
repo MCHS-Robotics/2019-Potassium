@@ -1,7 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.I2cAddr;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Robot {
     private DcMotor left = null;
@@ -9,16 +16,26 @@ public class Robot {
     private DcMotor collection = null;
     private DcMotor lift = null;
     private Servo jewel = null;
-
+    private NormalizedColorSensor colorSensor;
+    private Telemetry telemetry;
     double intoTicks = 1120 / 4 * Math.PI;
 
-    public Robot(DcMotor left2, DcMotor right2, DcMotor collection2, DcMotor lift2, Servo jewel2) {
+
+    public Robot(DcMotor left2, DcMotor right2, DcMotor collection2, DcMotor lift2,
+                 Servo jewel2, NormalizedColorSensor colorSensor2, Telemetry telemetry2) {
         left = left2;
         right = right2;
         collection = collection2;
         lift = lift2;
         jewel = jewel2;
+        colorSensor = colorSensor2;
+        telemetry = telemetry2;
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //collection.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        left.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 
@@ -34,8 +51,12 @@ public class Robot {
         left.setPower(.75);
         right.setPower(.75);
         while (left.isBusy()) {
-
+            telemetry.addData("Left position", left.getCurrentPosition());
+            telemetry.addData("Right position", right.getCurrentPosition());
+            telemetry.update();
         }
+        left.setPower(0);
+        right.setPower(0);
     }
 
     public void backward(int in) {
@@ -57,7 +78,12 @@ public class Robot {
         left.setPower(.75);
         right.setPower(.75);
         while (left.isBusy()) {
+            telemetry.addData("Left position", left.getCurrentPosition());
+            telemetry.addData("Right position", right.getCurrentPosition());
+            telemetry.update();
         }
+        left.setPower(0);
+        right.setPower(0);
     }
 
     public void collect(int sec) {
@@ -79,5 +105,7 @@ public class Robot {
         lift.setPower(.75);
         while (left.isBusy()) {
         }
+
     }
+
 }
