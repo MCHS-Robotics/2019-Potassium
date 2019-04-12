@@ -18,7 +18,7 @@ public class Robot {
     private Servo jewel = null;
     private NormalizedColorSensor colorSensor;
     private Telemetry telemetry;
-    double intoTicks = 1120 / 4 * Math.PI;
+    double intoTicks = 1120 / (4 * Math.PI);
 
 
     public Robot(DcMotor left2, DcMotor right2, DcMotor collection2, DcMotor lift2,
@@ -51,12 +51,14 @@ public class Robot {
         left.setPower(.75);
         right.setPower(.75);
         while (left.isBusy()) {
-            telemetry.addData("Left position", left.getCurrentPosition());
-            telemetry.addData("Right position", right.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("Left position", left.getCurrentPosition());
+//            telemetry.addData("Right position", right.getCurrentPosition());
+//            telemetry.addData("Left target position", left.getTargetPosition());
+//            telemetry.update();
         }
         left.setPower(0);
         right.setPower(0);
+
     }
 
     public void backward(int in) {
@@ -64,10 +66,11 @@ public class Robot {
     }
 
     public void turn(int degree) {
-        double diameter = 20;
+        double diameter = 15;
         double circumference = Math.PI * diameter;
 
-        int position = (int) (degree / 360 * circumference * intoTicks);
+        double v = degree / 360.0 * circumference * intoTicks;
+        int position = (int) v;
 
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -75,24 +78,35 @@ public class Robot {
         right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(position);
         right.setTargetPosition(-position);
+//        telemetry.addData("Left position", left.getCurrentPosition());
+//        telemetry.addData("Right position", right.getCurrentPosition());
+//        telemetry.addData("Left target position", left.getTargetPosition());
+//        telemetry.addData("Right target position", right.getTargetPosition());
+//        telemetry.addData("v", v);
+//        telemetry.update();
         left.setPower(.75);
         right.setPower(.75);
         while (left.isBusy()) {
-            telemetry.addData("Left position", left.getCurrentPosition());
-            telemetry.addData("Right position", right.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("Left position", left.getCurrentPosition());
+//            telemetry.addData("Right position", right.getCurrentPosition());
+//            telemetry.addData("Left target position", left.getTargetPosition());
+//            telemetry.update();
         }
         left.setPower(0);
         right.setPower(0);
     }
 
-    public void collect(int sec) {
-        collection.setPower(.75);
+    private void sleep(int milliseconds) {
         try {
-            Thread.sleep(500);
+            Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void collect(int sec) {
+        collection.setPower(.75);
+        sleep(500);
         collection.setPower(0);
     }
 

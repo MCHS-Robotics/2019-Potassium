@@ -38,17 +38,19 @@ public class PotassiumAuto extends LinearOpMode {
 
         waitForStart();
 
-        //robot.forward(72);
-        //robot.turn(-90);
-        //robot.forward(63);
-        //robot.turn(90);
-        //robot.forward(47);
-
-        for (int i=0; i<=3; i++){
-        robot.forward(24);
+        robot.forward(130);
+        robot.backward(5);
         robot.turn(90);
-        }
+        robot.backward(55);
+        //color sensor
+        sleep(3000);
+
+        robot.turn(90);
+        robot.forward(55);
 
         robot.turn(270);
+
+
+
     }
 }
