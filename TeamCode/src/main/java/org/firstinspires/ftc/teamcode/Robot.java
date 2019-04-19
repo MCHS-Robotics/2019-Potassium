@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -10,25 +11,58 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.Locale;
+
 public class Robot {
     private DcMotor left = null;
     private DcMotor right = null;
     private DcMotor collection = null;
     private DcMotor lift = null;
     private Servo jewel = null;
-    private NormalizedColorSensor colorSensor;
     private Telemetry telemetry;
+    private ColorSensor sensorColor;
+    private DistanceSensor sensorDistance;
     double intoTicks = 1120 / (4 * Math.PI);
+
+    int relativeLayoutId;
+    final View relativeLayout;
+
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F, 0F, 0F};
+
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+
+    // sometimes it helps to multiply the raw RGB values with a scale factor
+    // to amplify/attentuate the measured values.
+    final double SCALE_FACTOR = 255;
+
+
 
 
     public Robot(DcMotor left2, DcMotor right2, DcMotor collection2, DcMotor lift2,
-                 Servo jewel2, NormalizedColorSensor colorSensor2, Telemetry telemetry2) {
-        left = left2;
-        right = right2;
-        collection = collection2;
-        lift = lift2;
-        jewel = jewel2;
-        colorSensor = colorSensor2;
+                 Servo jewel2, Telemetry telemetry2, ColorSensor sensorColor2, HardwareMap hardwareMap) {
+        left = hardwareMap.get(DcMotor.class, "left");
+        right = hardwareMap.get(DcMotor.class, "right");
+        sensorColor = hardwareMap.get(ColorSensor.class, "sensorColorDistance");
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColorDistance");
+//        collection = hardwareMap.get(DcMotor.class, "collection");
+//        lift = hardwareMap.get(DcMotor.class, "lift");
+//        jewel = hardwareMap.get(Servo.class, "jewel");
+
         telemetry = telemetry2;
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -36,6 +70,9 @@ public class Robot {
         //lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         left.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
 
     }
 
@@ -119,6 +156,28 @@ public class Robot {
         lift.setPower(.75);
         while (left.isBusy()) {
         }
+
+    }
+
+    public void senseTheColor(){
+        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                (int) (sensorColor.green() * SCALE_FACTOR),
+                (int) (sensorColor.blue() * SCALE_FACTOR),
+                hsvValues);
+        telemetry.addData("Distance (cm)",
+                String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+        telemetry.addData("Alpha", sensorColor.alpha());
+        telemetry.addData("Red  ", sensorColor.red());
+        telemetry.addData("Green", sensorColor.green());
+        telemetry.addData("Blue ", sensorColor.blue());
+        telemetry.addData("Hue", hsvValues[0]);
+        relativeLayout.post(new Runnable() {
+            public void run() {
+                relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
+            }
+        });
+
+        telemetry.update();
 
     }
 
