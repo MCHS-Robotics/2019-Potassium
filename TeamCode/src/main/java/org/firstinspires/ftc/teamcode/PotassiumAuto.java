@@ -3,29 +3,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Locale;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
@@ -52,19 +35,34 @@ public class PotassiumAuto extends LinearOpMode {
 
 
         robot.forward(130);
+        robot.turn(88);
+
         sleep(1000);
-        robot.backward(15);
-        robot.turn(90);
-        robot.backward(55);
-        while (opModeIsActive()) {
-            robot.senseTheColor();
+        robot.backward(12);
+
+        while (!robot.isBeaconThere()){
+            robot.turnOnMotors();
         }
-//        sleep(3000);
-//
-//        robot.turn(93);
-//        robot.forward(55);
-//
-//        robot.turn(360);
+        robot.turnOffMotors();
+
+        Dye color = robot.senseColorAndDistance();
+
+        if (color == Dye.RED){
+            robot.forward(30); //guess
+            //dump marker
+            robot.backward(30);
+        }
+        else if (color == Dye.BLUE){
+            robot.backward(20); //guess again
+            //dump marker
+            robot.forward(20);
+        }
+        sleep(3000);
+
+        robot.turn(93);
+        robot.forward(55);
+
+        robot.turn(360);
 
 
 

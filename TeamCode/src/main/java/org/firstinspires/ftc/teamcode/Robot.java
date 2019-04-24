@@ -159,7 +159,7 @@ public class Robot {
 
     }
 
-    public void senseTheColor(){
+    public Dye senseColorAndDistance(){
         Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
                 (int) (sensorColor.green() * SCALE_FACTOR),
                 (int) (sensorColor.blue() * SCALE_FACTOR),
@@ -176,9 +176,44 @@ public class Robot {
                 relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
             }
         });
-
+        telemetry.update();
+        sleep(1000);
+        Dye color = null;
+        if ((sensorColor.red() - sensorColor.blue()) > 30){
+            color = Dye.RED;
+            telemetry.addData("Color Detected: ", "RED");
+        }
+        else if ((sensorColor.blue() - sensorColor.red()) > 30){
+            color = Dye.BLUE;
+            telemetry.addData("Color Detected: ", "BLUE");
+        }
+        else {
+            color = Dye.NONE;
+            telemetry.addData("Color Detected: ", "NONE");
+        }
         telemetry.update();
 
+        return color;
+
+    }
+
+    public boolean isBeaconThere(){
+        if (sensorDistance.getDistance(DistanceUnit.CM) <= 15){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void turnOnMotors(){
+        left.setPower(.5);
+        right.setPower(.5);
+    }
+
+    public void turnOffMotors(){
+        left.setPower(0);
+        right.setPower(0);
     }
 
 }
