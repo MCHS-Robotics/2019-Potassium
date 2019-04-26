@@ -35,34 +35,40 @@ public class PotassiumAuto extends LinearOpMode {
 
 
         robot.forward(130);
-        robot.turn(88);
+        sleep(500);
+        robot.backward(8);
+        robot.turn(90);
 
-        sleep(1000);
-        robot.backward(12);
+        robot.turnOnMotorsBackward();
 
         while (!robot.isBeaconThere()){
-            robot.turnOnMotors();
+            telemetry.update();
         }
         robot.turnOffMotors();
 
         Dye color = robot.senseColorAndDistance();
-
+// for blue side
         if (color == Dye.RED){
-            robot.forward(30); //guess
-            //dump marker
-            robot.backward(30);
-        }
-        else if (color == Dye.BLUE){
             robot.backward(20); //guess again
-            //dump marker
+            sleep(2000);//dump marker
             robot.forward(20);
         }
-        sleep(3000);
-
+        else if (color == Dye.BLUE){
+            robot.forward(30); //guess
+            sleep(2000);//dump marker
+            robot.backward(30);
+        }
+        else{
+            robot.forward(30); //guess
+            sleep(2000);//dump marker
+            robot.backward(30);
+        }
         robot.turn(93);
-        robot.forward(55);
+        robot.forward(50);
 
-        robot.turn(360);
+        robot.turn(270);
+
+        robot.forward(72);
 
 
 

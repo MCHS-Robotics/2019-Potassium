@@ -199,16 +199,24 @@ public class Robot {
 
     public boolean isBeaconThere(){
         if (sensorDistance.getDistance(DistanceUnit.CM) <= 15){
+            telemetry.addData("Is Beakon There?", "true");
+            telemetry.update();
+
             return true;
         }
         else {
+            telemetry.addData("Is Beakon There?", "false");
+            telemetry.update();
+
             return false;
         }
     }
 
-    public void turnOnMotors(){
-        left.setPower(.5);
-        right.setPower(.5);
+    public void turnOnMotorsBackward(){
+        left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        left.setPower(-0.5);
+        right.setPower(-0.5);
     }
 
     public void turnOffMotors(){
