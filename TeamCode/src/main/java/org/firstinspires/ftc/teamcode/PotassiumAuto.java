@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 
-@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+@Autonomous(name="Potassium Auto", group="Pushbot")
 //@Disabled
 public class PotassiumAuto extends LinearOpMode {
     private DcMotor left = null;
