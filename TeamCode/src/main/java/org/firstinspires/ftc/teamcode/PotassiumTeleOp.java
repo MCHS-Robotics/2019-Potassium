@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.support.annotation.NonNull;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -14,9 +18,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
-@Autonomous(name = "Potassium TeleOp", group = "Pushbot")
+@TeleOp(name = "Potassium TeleOp", group = "Pushbot")
 //@Disabled
 public class PotassiumTeleOp extends LinearOpMode {
     private DcMotor left = null;
@@ -37,11 +44,15 @@ public class PotassiumTeleOp extends LinearOpMode {
 
     private int position;
     private int angle;
+    private int distance;
+    private int objectWidth;
 
 
     @Override
     public void runOpMode() {
 
+        initVuforia();
+        initTfod();
 
         Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor, hardwareMap);
 
@@ -52,18 +63,36 @@ public class PotassiumTeleOp extends LinearOpMode {
 
         waitForStart();
 
-        detect();
+        detect(robot);
         robot.turn(angle);
+        robot.forward(objectWidth / 2);
 
 
     }
 
-    private void detect() {
+    private void detect(Robot robot) {
         if (tfod != null) {
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
 
-            position = (int) (updatedRecognitions.get(0).getLeft() + updatedRecognitions.get(0).getWidth() / 2);
-            angle = (int) (updatedRecognitions.get(0).estimateAngleToObject(AngleUnit.DEGREES));
+            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions() ;
+            while(opModeIsActive()) {
+                    updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if(updatedRecognitions != null && updatedRecognitions.size() != 0) {
+                        position = (int) (updatedRecognitions.get(0).getLeft() + updatedRecognitions.get(0).getWidth() / 2);
+                        angle = (int) (updatedRecognitions.get(0).estimateAngleToObject(AngleUnit.DEGREES));
+
+                        telemetry.addData("angle: ", angle);
+                        telemetry.update();
+                        robot.turn(angle);
+                        objectWidth = (int)(updatedRecognitions.get(0).getWidth());
+                        telemetry.addData("object width: ", objectWidth);
+
+                        sleep(6000);
+                        break;
+                    }
+
+            }
+
+
 
 
 //                if (updatedRecognitions != null) {
