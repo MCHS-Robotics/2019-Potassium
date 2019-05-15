@@ -39,91 +39,123 @@ public class PotassiumTeleOp extends LinearOpMode {
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
     private static final String VUFORIA_KEY = " ATiuXRv/////AAABmX/tug8P6EteuRJz2PTAi6JMBeLa9Te+gCRaTBPeDZ77UloArIT7REsZPIosl4YG0JLDyl4+yj3lpzfzKIkpOQNRfsgfAjS6tTbwBRHJsnStRDKMwb4Fj5l3rTCxB8qHn8GW45O1BGLuAROQ+DrNs26ktJV3HTEr6N4XYXSdDD3UX+2Yj8u4CmJ6xk4kY0JdX/Kklw4Ai0Mba5vFviXXjue5UMQRZTIy45y2h8UpEcSFeqiLLKdGktA5qL5NufN0/KZXI3EQNHjmrAi52oqWiO7JBAolc9uC7B910YGiGI6E0a/KJAvxLY6zlKuXI+XkQP9WgGwfXUZhU8nTyKnEDi4HY0v/+uSmKfcyIrDWf2KW";
 
-    private VuforiaLocalizer vuforia;
-    private TFObjectDetector tfod;
-
-    private int position;
-    private int angle;
-    private int distance;
-    private int objectWidth;
+    //    private VuforiaLocalizer vuforia;
+//    private TFObjectDetector tfod;
+//
+//    private int position;
+//    private int angle;
+//    private int distance;
+//    private int objectWidth;
+    private boolean isRight;
 
 
     @Override
     public void runOpMode() {
 
-        initVuforia();
-        initTfod();
+//        initVuforia();
+//        initTfod();
 
         Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor, hardwareMap);
 
-        if (tfod != null) {
-            /** Activate Tensor Flow Object Detection. */
-            tfod.activate();
-        }
+//        if (tfod != null) {
+//            /** Activate Tensor Flow Object Detection. */
+//            tfod.activate();
+//        }
 
         waitForStart();
 
-        detect(robot);
-        robot.turn(angle);
-        robot.forward(objectWidth / 2);
+        robot.turnOnMotorsBackward();
 
-
-    }
-
-    private void detect(Robot robot) {
-        if (tfod != null) {
-
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions() ;
-            while(opModeIsActive()) {
-                    updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if(updatedRecognitions != null && updatedRecognitions.size() != 0) {
-                        position = (int) (updatedRecognitions.get(0).getLeft() + updatedRecognitions.get(0).getWidth() / 2);
-                        angle = (int) (updatedRecognitions.get(0).estimateAngleToObject(AngleUnit.DEGREES));
-
-                        telemetry.addData("angle: ", angle);
-                        telemetry.update();
-                        robot.turn(angle);
-                        objectWidth = (int)(updatedRecognitions.get(0).getWidth());
-                        telemetry.addData("object width: ", objectWidth);
-
-                        sleep(6000);
-                        break;
-                    }
-
-            }
-
-
-
-
-//                if (updatedRecognitions != null) {
-//
-//                }
+        while (!robot.isBeaconThere()) {
+            telemetry.update();
         }
-    }
+        robot.turnOffMotors();
 
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        Dye color = robot.senseColorAndDistance();
+        // for blue side
+        if (color == Dye.RED) {
+            isRight = false;
+        } else if (color == Dye.BLUE) {
+            isRight = true;
+        }
+        telemetry.addData("isRight: ", isRight);
 
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        while (opModeIsActive()) {
+            robot.turn(54);
+            robot.forward(75);
+            robot.turn(112);
+            robot.forward(98);
+            robot.turn(73);
+            robot.forward(75);
+            robot.turn(112);
+            robot.forward(98);
+            robot.turn(19);
 
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+            //dump
+        }
 
-        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
-    }
+//        detect(robot);
+//        robot.turn(angle);
+//        robot.forward(objectWidth / 2);
+//
 
-    /**
-     * Initialize the Tensor Flow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
 }
+
+//    private void detect(Robot robot) {
+//        if (tfod != null) {
+//
+//            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions() ;
+//            while(opModeIsActive()) {
+//                    updatedRecognitions = tfod.getUpdatedRecognitions();
+//                    if(updatedRecognitions != null && updatedRecognitions.size() != 0) {
+//                        position = (int) (updatedRecognitions.get(0).getLeft() + updatedRecognitions.get(0).getWidth() / 2);
+//                        angle = (int) (updatedRecognitions.get(0).estimateAngleToObject(AngleUnit.DEGREES));
+//
+//                        telemetry.addData("angle: ", angle);
+//                        telemetry.update();
+//                        robot.turn(angle);
+//                        objectWidth = (int)(updatedRecognitions.get(0).getWidth());
+//                        telemetry.addData("object width: ", objectWidth);
+//
+//                        sleep(6000);
+//                        break;
+//                    }
+//
+//            }
+//
+//
+//
+//
+////                if (updatedRecognitions != null) {
+////
+////                }
+//        }
+//    }
+//
+//    private void initVuforia() {
+//        /*
+//         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+//         */
+//        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+//
+//        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+//        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+//
+//        //  Instantiate the Vuforia engine
+//        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+//
+//        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
+//    }
+//
+//    /**
+//     * Initialize the Tensor Flow Object Detection engine.
+//     */
+//    private void initTfod() {
+//        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+//                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+//        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+//        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+//    }
+//}
