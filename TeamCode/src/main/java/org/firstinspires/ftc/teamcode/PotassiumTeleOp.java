@@ -81,15 +81,15 @@ public class PotassiumTeleOp extends LinearOpMode {
         telemetry.addData("isRight: ", isRight);
 
         while (opModeIsActive()) {
-            robot.turn(54);
-            robot.forward(75);
-            robot.turn(112);
-            robot.forward(98);
-            robot.turn(73);
-            robot.forward(75);
-            robot.turn(112);
-            robot.forward(98);
             robot.turn(19);
+            robot.forward(70);
+            robot.turn(107);
+            robot.forward(91);
+            robot.turn(73);
+            robot.forward(70);
+            robot.turn(107);
+            robot.forward(91);
+            robot.turn(54);
 
             //dump
         }
