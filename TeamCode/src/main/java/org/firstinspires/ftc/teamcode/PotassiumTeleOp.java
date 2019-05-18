@@ -63,34 +63,36 @@ public class PotassiumTeleOp extends LinearOpMode {
 //        }
 
         waitForStart();
+//
+//        robot.turnOnMotorsBackward();
+//
+//        while (!robot.isBeaconThere()) {
+//            telemetry.update();
+//        }
+//        robot.turnOffMotors();
+//
+//        Dye color = robot.senseColorAndDistance();
+//        // for blue side
+//        if (color == Dye.RED) {
+//            isRight = false;
+//        } else if (color == Dye.BLUE) {
+//            isRight = true;
+//        }
+//        telemetry.addData("isRight: ", isRight);
 
-        robot.turnOnMotorsBackward();
-
-        while (!robot.isBeaconThere()) {
-            telemetry.update();
-        }
-        robot.turnOffMotors();
-
-        Dye color = robot.senseColorAndDistance();
-        // for blue side
-        if (color == Dye.RED) {
-            isRight = false;
-        } else if (color == Dye.BLUE) {
-            isRight = true;
-        }
-        telemetry.addData("isRight: ", isRight);
 
         while (opModeIsActive()) {
-            robot.turn(19);
-            robot.forward(70);
-            robot.turn(107);
-            robot.forward(91);
-            robot.turn(73);
-            robot.forward(70);
-            robot.turn(107);
-            robot.forward(91);
-            robot.turn(54);
-
+            robot.turn(55);
+            robot.forward(49);
+            robot.turn(45);
+            robot.forward(84);
+            robot.turn(90);
+            robot.forward(84);
+            robot.turn(90);
+            robot.forward(84);
+            robot.turn(45);
+            robot.forward(49);
+            robot.turn(45);
             //dump
         }
 

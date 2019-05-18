@@ -199,7 +199,7 @@ public class Robot {
 
     public boolean isBeaconThere(){
         if (sensorDistance.getDistance(DistanceUnit.CM) <= 15){
-            telemetry.addData("Is Beakon There?", "true");
+            telemetry.addData("Is Beakon There? ", "true");
             telemetry.update();
 
             return true;
@@ -207,6 +207,7 @@ public class Robot {
         else {
             telemetry.addData("Is Beakon There?", "false");
             telemetry.update();
+
 
             return false;
         }
