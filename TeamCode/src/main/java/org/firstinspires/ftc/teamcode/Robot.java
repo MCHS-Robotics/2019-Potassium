@@ -35,7 +35,7 @@ public class Robot {
     private Telemetry telemetry;
     private ColorSensor sensorColor;
     private DistanceSensor sensorDistance;
-    double intoTicks = 1120 / (4 * Math.PI);
+    public double intoTicks = 1120 / (4 * Math.PI);
 
     int relativeLayoutId;
     final View relativeLayout;
@@ -85,8 +85,8 @@ public class Robot {
         right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(position);
         right.setTargetPosition(position);
-        left.setPower(.75);
-        right.setPower(.75);
+        left.setPower(1);
+        right.setPower(1);
         while (left.isBusy()) {
 //            telemetry.addData("Left position", left.getCurrentPosition());
 //            telemetry.addData("Right position", right.getCurrentPosition());
@@ -223,6 +223,14 @@ public class Robot {
     public void turnOffMotors(){
         left.setPower(0);
         right.setPower(0);
+    }
+
+    public DcMotor getLeft(){
+        return left;
+    }
+
+    public DcMotor getRight(){
+        return right;
     }
 
 }

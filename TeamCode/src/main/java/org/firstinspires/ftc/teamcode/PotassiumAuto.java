@@ -68,10 +68,10 @@ public class PotassiumAuto extends LinearOpMode {
 
         robot.turn(20);
 
-        robot.backward(50);
+        robot.backward(54);
         sleep(300);
 
-        robot.turn(-100);
+        robot.turn(-110);
 
 
 

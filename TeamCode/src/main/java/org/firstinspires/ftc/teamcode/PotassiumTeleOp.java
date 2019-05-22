@@ -63,36 +63,54 @@ public class PotassiumTeleOp extends LinearOpMode {
 //        }
 
         waitForStart();
-//
-//        robot.turnOnMotorsBackward();
-//
-//        while (!robot.isBeaconThere()) {
-//            telemetry.update();
-//        }
-//        robot.turnOffMotors();
-//
-//        Dye color = robot.senseColorAndDistance();
-//        // for blue side
-//        if (color == Dye.RED) {
-//            isRight = false;
-//        } else if (color == Dye.BLUE) {
-//            isRight = true;
-//        }
-//        telemetry.addData("isRight: ", isRight);
+
+        robot.turnOnMotorsBackward();
+        robot.getLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.getLeft().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.getRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.getRight().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        while (!robot.isBeaconThere() && robot.getLeft().getCurrentPosition() * (1 / robot.intoTicks) > -20) {
+            telemetry.addData("Position in in: ", robot.getLeft().getCurrentPosition() * (1 / robot.intoTicks));
+            telemetry.update();
+        }
+        robot.turnOffMotors();
+
+        robot.getLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.getLeft().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        Dye color = robot.senseColorAndDistance();
+        // for blue side
+        if (color == Dye.RED) {
+            isRight = false;
+        } else if (color == Dye.BLUE) {
+            isRight = true;
+        }
+        telemetry.addData("isRight: ", isRight);
 
 
         while (opModeIsActive()) {
-            robot.turn(55);
-            robot.forward(49);
-            robot.turn(45);
-            robot.forward(84);
-            robot.turn(90);
-            robot.forward(84);
-            robot.turn(90);
-            robot.forward(84);
             robot.turn(45);
             robot.forward(49);
             robot.turn(45);
+            robot.forward(60);
+            robot.turn(90);
+            robot.forward(60);
+            robot.turn(90);
+            robot.forward(60);
+            robot.turn(45);
+            robot.forward(49);
+            robot.turn(45);
+
+            robot.turnOnMotorsBackward();
+
+            while (!robot.isBeaconThere()) {
+                telemetry.update();
+            }
+            robot.turnOffMotors();
+
+            sleep(1000);
             //dump
         }
 
