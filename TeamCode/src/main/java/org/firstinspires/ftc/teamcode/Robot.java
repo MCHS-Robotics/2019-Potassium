@@ -57,6 +57,7 @@ public class Robot {
                  Servo jewel2, Telemetry telemetry2, ColorSensor sensorColor2, HardwareMap hardwareMap) {
         left = hardwareMap.get(DcMotor.class, "left");
         right = hardwareMap.get(DcMotor.class, "right");
+        lift = hardwareMap.get(DcMotor.class, "lift");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColorDistance");
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColorDistance");
 //        collection = hardwareMap.get(DcMotor.class, "collection");
@@ -224,6 +225,7 @@ public class Robot {
         left.setPower(0);
         right.setPower(0);
     }
+
 
     public DcMotor getLeft(){
         return left;
