@@ -36,6 +36,7 @@ public class Robot {
     private ColorSensor sensorColor;
     private DistanceSensor sensorDistance;
     public double intoTicks = 1120 / (4 * Math.PI);
+    public double liftInToCounts = 25.4 * 70;
 
     int relativeLayoutId;
     final View relativeLayout;
@@ -129,6 +130,11 @@ public class Robot {
 //            telemetry.addData("Right position", right.getCurrentPosition());
 //            telemetry.addData("Left target position", left.getTargetPosition());
 //            telemetry.update();
+
+            if (left.getTargetPosition() - left.getCurrentPosition() > 20 * intoTicks){
+                left.setPower(1);
+                right.setPower(1);
+            }
         }
         left.setPower(0);
         right.setPower(0);
@@ -148,15 +154,13 @@ public class Robot {
         collection.setPower(0);
     }
 
-    public void lift(){
-        int position = (int)(intoTicks * 12);
+    public void lift(double in){
+        int position = (int)(liftInToCounts * in);
 
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setTargetPosition(position);
-        lift.setPower(.75);
-        while (left.isBusy()) {
-        }
+        lift.setPower(1);
 
     }
 
@@ -226,6 +230,11 @@ public class Robot {
         right.setPower(0);
     }
 
+    public void resetLift(){
+        lift.setPower(-0.25);
+        sleep(10000);
+        lift.setPower(0);
+    }
 
     public DcMotor getLeft(){
         return left;

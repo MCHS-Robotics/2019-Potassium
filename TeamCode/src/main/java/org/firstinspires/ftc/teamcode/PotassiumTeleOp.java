@@ -62,6 +62,9 @@ public class PotassiumTeleOp extends LinearOpMode {
 //            tfod.activate();
 //        }
 
+        lift.setPower(0.25);
+        sleep(10000);
+
         waitForStart();
 
         robot.turnOnMotorsBackward();
@@ -70,11 +73,12 @@ public class PotassiumTeleOp extends LinearOpMode {
         robot.getRight().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.getRight().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        while (!robot.isBeaconThere() && robot.getLeft().getCurrentPosition() * (1 / robot.intoTicks) > -20) {
+// move until sees beacon or moves more than 4 inches
+        while (!robot.isBeaconThere() && robot.getLeft().getCurrentPosition() * (1 / robot.intoTicks) > -4) {
             telemetry.addData("Position in in: ", robot.getLeft().getCurrentPosition() * (1 / robot.intoTicks));
             telemetry.update();
         }
+        sleep(2000);
         robot.turnOffMotors();
 
         robot.getLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -88,6 +92,7 @@ public class PotassiumTeleOp extends LinearOpMode {
             isRight = true;
         }
         telemetry.addData("isRight: ", isRight);
+        sleep(2000);
 
 
         while (opModeIsActive()) {
@@ -96,10 +101,10 @@ public class PotassiumTeleOp extends LinearOpMode {
             robot.turn(45);
             robot.forward(60);
             robot.turn(90);
-            robot.forward(60);
+            robot.forward(63);
             robot.turn(90);
             robot.forward(60);
-            robot.turn(45);
+            robot.turn(40);
             robot.forward(49);
             robot.turn(45);
 
@@ -110,17 +115,35 @@ public class PotassiumTeleOp extends LinearOpMode {
             }
             robot.turnOffMotors();
 
-            sleep(1000);
+        if (isRight != true && isRight != false){
+            color = robot.senseColorAndDistance();
+        // for blue side
+        if (color == Dye.RED) {
+            isRight = false;
+        } else if (color == Dye.BLUE) {
+            isRight = true;
+        }
+        telemetry.addData("isRight: ", isRight);
+        }
+
+            sleep(3000);
             //dump
         }
 
-//        detect(robot);
-//        robot.turn(angle);
-//        robot.forward(objectWidth / 2);
-//
+
 
     }
 }
+
+
+
+//WEBCAM SORCERY:
+
+//Probably useless webcam ideas:
+//        detect(robot);
+//        robot.turn(angle);
+//        robot.forward(objectWidth / 2);
+
 
 //    private void detect(Robot robot) {
 //        if (tfod != null) {
