@@ -29,12 +29,10 @@ public class PotassiumAutoBlue extends LinearOpMode {
 
         Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor,hardwareMap);
 
-        robot.resetLift();
-
         waitForStart();
 
 
-
+        robot.lift(9);
         robot.forward(130);
         sleep(500);
         robot.backward(8);
@@ -49,28 +47,24 @@ public class PotassiumAutoBlue extends LinearOpMode {
 
         Dye color = robot.senseColorAndDistance();
 // for blue side
-        if (color == Dye.BLUE){
+        if (color == Dye.RED){
             robot.backward(20); //guess again
-            robot.lift(9);
             sleep(2000);
-            robot.lift(-9);
             robot.forward(20);
         }
-        else if (color == Dye.RED){
+        else if (color == Dye.BLUE){
             robot.forward(30); //guess
-            robot.lift(9);
             sleep(2000);//dump marker
-            robot.lift(-9);
             robot.backward(30);
         }
         else{
             robot.forward(30); //guess
-            robot.lift(9);
             sleep(2000);//dump marker
-            robot.lift(-9);
+
             robot.backward(30);
         }
         robot.turn(100);
+        robot.lift(-9);
         robot.forward(50);
 
         robot.turn(25);

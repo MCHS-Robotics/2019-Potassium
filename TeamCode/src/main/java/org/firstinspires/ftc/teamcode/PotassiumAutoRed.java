@@ -26,7 +26,6 @@ public class PotassiumAutoRed extends LinearOpMode {
 
 
         Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor,hardwareMap);
-        robot.resetLift();
 
         waitForStart();
 
