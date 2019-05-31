@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 public class PotassiumAutoBlue extends LinearOpMode {
     private DcMotor left = null;
     private DcMotor right = null;
-    private DcMotor collection = null;
+    private DcMotor collect = null;
     private DcMotor lift = null;
     private Servo jewel = null;
     private ColorSensor sensorColor;
@@ -27,7 +27,7 @@ public class PotassiumAutoBlue extends LinearOpMode {
     public void runOpMode() {
 
 
-        Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor,hardwareMap);
+        Robot robot = new Robot(left, right, collect, lift, jewel, telemetry, sensorColor,hardwareMap);
 
         waitForStart();
 
@@ -54,7 +54,7 @@ public class PotassiumAutoBlue extends LinearOpMode {
         }
         else if (color == Dye.BLUE){
             robot.forward(30); //guess
-            sleep(2000);//dump marker
+            collect.setPower(1);//dump marker
             robot.backward(30);
         }
         else{

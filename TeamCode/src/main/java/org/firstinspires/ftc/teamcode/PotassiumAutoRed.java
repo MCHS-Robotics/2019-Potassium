@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 public class PotassiumAutoRed extends LinearOpMode {
     private DcMotor left = null;
     private DcMotor right = null;
-    private DcMotor collection = null;
+    private DcMotor collect = null;
     private DcMotor lift = null;
     private Servo jewel = null;
     private ColorSensor sensorColor;
@@ -25,7 +25,7 @@ public class PotassiumAutoRed extends LinearOpMode {
     public void runOpMode() {
 
 
-        Robot robot = new Robot(left, right, collection, lift, jewel, telemetry, sensorColor,hardwareMap);
+        Robot robot = new Robot(left, right, collect, lift, jewel, telemetry, sensorColor,hardwareMap);
 
         waitForStart();
 

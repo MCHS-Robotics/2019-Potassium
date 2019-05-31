@@ -29,7 +29,7 @@ import java.util.Locale;
 public class Robot {
     private DcMotor left = null;
     private DcMotor right = null;
-    private DcMotor collection = null;
+    private DcMotor collect = null;
     private DcMotor lift = null;
     private Servo jewel = null;
     private Telemetry telemetry;
@@ -54,14 +54,14 @@ public class Robot {
 
 
 
-    public Robot(DcMotor left2, DcMotor right2, DcMotor collection2, DcMotor lift2,
+    public Robot(DcMotor left2, DcMotor right2, DcMotor collect2, DcMotor lift2,
                  Servo jewel2, Telemetry telemetry2, ColorSensor sensorColor2, HardwareMap hardwareMap) {
         left = hardwareMap.get(DcMotor.class, "left");
         right = hardwareMap.get(DcMotor.class, "right");
         lift = hardwareMap.get(DcMotor.class, "lift");
         sensorColor = hardwareMap.get(ColorSensor.class, "sensorColorDistance");
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColorDistance");
-//        collection = hardwareMap.get(DcMotor.class, "collection");
+ collect = hardwareMap.get(DcMotor.class, "collect");
 //        lift = hardwareMap.get(DcMotor.class, "lift");
 //        jewel = hardwareMap.get(Servo.class, "jewel");
 
@@ -148,11 +148,7 @@ public class Robot {
         }
     }
 
-    public void collect(int sec) {
-        collection.setPower(.75);
-        sleep(500);
-        collection.setPower(0);
-    }
+
 
     public void lift(double in){
         int position = (int)(liftInToCounts * in);
