@@ -64,6 +64,8 @@ public class PotassiumTeleOp extends LinearOpMode {
 
         waitForStart();
 
+        robot.turn70counterclockwise();
+
         robot.turnOnMotorsBackward();
         robot.getLeft().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.getLeft().setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -106,7 +108,7 @@ public class PotassiumTeleOp extends LinearOpMode {
             robot.forward(60);
             robot.turn(40);
             robot.forward(49);
-            robot.turn(45);
+            robot.turn(48);
 
             robot.turnOnMotorsBackward();
 
@@ -131,7 +133,7 @@ public class PotassiumTeleOp extends LinearOpMode {
         }
 
             sleep(3000);
-            //dump
+            robot.dropOff();
         }
 
 

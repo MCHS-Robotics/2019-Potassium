@@ -72,7 +72,6 @@ public class PotassiumAutoBlue extends LinearOpMode {
         robot.turn(25);
 
         robot.backward(52);
-        sleep(300);
 
 
     }

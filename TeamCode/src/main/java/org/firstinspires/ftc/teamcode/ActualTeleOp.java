@@ -41,7 +41,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
             if(gamepad2.left_stick_y >0.2) {
-                right.setPower(-0.6);
+                right.setPower(-0.55);
                 left.setPower(-0.7);
             }
             else if(gamepad2.left_stick_y<-0.2) {

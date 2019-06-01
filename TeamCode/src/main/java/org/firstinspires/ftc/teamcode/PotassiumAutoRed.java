@@ -48,7 +48,7 @@ public class PotassiumAutoRed extends LinearOpMode {
 // for red side
         if (color == Dye.BLUE){
             robot.backward(20);
-robot.jewelDeploy();
+            robot.jewelDeploy();
             robot.forward(20);
         }
         else if (color == Dye.RED){
@@ -68,10 +68,6 @@ robot.jewelDeploy();
         robot.turn(25);
 
         robot.backward(50);
-        sleep(300);
-
-        robot.turn(-100);
-
 
 
     }

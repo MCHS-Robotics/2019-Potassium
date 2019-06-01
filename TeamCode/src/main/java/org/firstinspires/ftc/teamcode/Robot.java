@@ -233,8 +233,8 @@ jewel = hardwareMap.get(Servo.class, "jewel");
     public void turnOnMotorsBackward(){
         left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        left.setPower(-0.5);
-        right.setPower(-0.5);
+        left.setPower(-0.4);
+        right.setPower(-0.4);
     }
 
     public void turnOffMotors(){
@@ -258,12 +258,20 @@ jewel = hardwareMap.get(Servo.class, "jewel");
 
     public void jewelDeploy (){
         jewel.setPosition(90);
-        sleep(1000);
-        jewel.setPosition(0);
+        sleep(7000);
     }
 
     public void turn70counterclockwise(){
+        double diameter = 15;
+        double circumference = Math.PI * diameter;
+        int position = (int) (89 / 360.0 * circumference * intoTicks);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setTargetPosition(position);
+        right.setPower(-0.75);
+        while (right.isBusy()){
 
+        }
     }
 
     public DcMotor getLeft(){
