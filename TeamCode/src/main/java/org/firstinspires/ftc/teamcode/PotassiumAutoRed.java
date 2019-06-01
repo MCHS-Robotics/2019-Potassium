@@ -20,17 +20,18 @@ public class PotassiumAutoRed extends LinearOpMode {
     private ColorSensor sensorColor;
     private DistanceSensor sensorDistance;
 
-
     @Override
     public void runOpMode() {
 
 
         Robot robot = new Robot(left, right, collect, lift, jewel, telemetry, sensorColor,hardwareMap);
 
+        robot.initLift();
+
         waitForStart();
 
 
-        robot.lift(9);
+        robot.lift(6);
         robot.forward(130);
         sleep(500);
         robot.backward(8);
@@ -46,27 +47,27 @@ public class PotassiumAutoRed extends LinearOpMode {
         Dye color = robot.senseColorAndDistance();
 // for red side
         if (color == Dye.BLUE){
-            robot.backward(20); //guess again
-            sleep(2000);
+            robot.backward(20);
+robot.jewelDeploy();
             robot.forward(20);
         }
         else if (color == Dye.RED){
-            robot.forward(30); //guess
-            sleep(2000);//dump marker
+            robot.forward(30);
+            robot.jewelDeploy();
             robot.backward(30);
         }
         else{
-            robot.forward(30); //guess
-            sleep(2000);//dump marker
+            robot.forward(30);
+            robot.jewelDeploy();
             robot.backward(30);
         }
         robot.turn(100);
         robot.lift(-9);
-        robot.forward(50);
+        robot.forward(45);
 
         robot.turn(25);
 
-        robot.backward(54);
+        robot.backward(50);
         sleep(300);
 
         robot.turn(-100);

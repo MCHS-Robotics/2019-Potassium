@@ -46,7 +46,7 @@ public class PotassiumTeleOp extends LinearOpMode {
 //    private int angle;
 //    private int distance;
 //    private int objectWidth;
-    private boolean isRight;
+    private int isRight = 0;
 
 
     @Override
@@ -61,9 +61,6 @@ public class PotassiumTeleOp extends LinearOpMode {
 //            /** Activate Tensor Flow Object Detection. */
 //            tfod.activate();
 //        }
-
-        lift.setPower(0.25);
-        sleep(10000);
 
         waitForStart();
 
@@ -87,9 +84,12 @@ public class PotassiumTeleOp extends LinearOpMode {
         Dye color = robot.senseColorAndDistance();
         // for blue side
         if (color == Dye.RED) {
-            isRight = false;
+            isRight = 2;
         } else if (color == Dye.BLUE) {
-            isRight = true;
+            isRight = 1;
+        }
+        else if (color == Dye.NONE){
+            isRight = 0;
         }
         telemetry.addData("isRight: ", isRight);
         sleep(2000);
@@ -115,14 +115,18 @@ public class PotassiumTeleOp extends LinearOpMode {
             }
             robot.turnOffMotors();
 
-        if (isRight != true && isRight != false){
+        if (isRight == 0){
             color = robot.senseColorAndDistance();
         // for blue side
-        if (color == Dye.RED) {
-            isRight = false;
-        } else if (color == Dye.BLUE) {
-            isRight = true;
-        }
+            // 0 - no color, 1 - true, 2 - false
+            if (color == Dye.RED) {
+            isRight = 2;
+            } else if (color == Dye.BLUE) {
+            isRight = 1;
+            }
+            else if (color == Dye.NONE){
+            isRight = 0;
+            }
         telemetry.addData("isRight: ", isRight);
         }
 

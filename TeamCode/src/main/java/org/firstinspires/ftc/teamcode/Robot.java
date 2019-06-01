@@ -63,7 +63,7 @@ public class Robot {
         sensorDistance = hardwareMap.get(DistanceSensor.class, "sensorColorDistance");
  collect = hardwareMap.get(DcMotor.class, "collect");
 //        lift = hardwareMap.get(DcMotor.class, "lift");
-//        jewel = hardwareMap.get(Servo.class, "jewel");
+jewel = hardwareMap.get(Servo.class, "jewel");
 
         telemetry = telemetry2;
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -140,6 +140,22 @@ public class Robot {
         right.setPower(0);
     }
 
+    public void dropOff(){
+
+        double diameter = 15;
+        double circumference = Math.PI * diameter;
+
+        double v = 90 / 360.0 * circumference * intoTicks;
+        int position = (int) v;
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left.setTargetPosition(position);
+        left.setPower(0.75);
+        forward(5);
+        collect.setPower(-1);
+        sleep(2000);
+        left.setTargetPosition(0);
+    }
     private void sleep(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -232,6 +248,24 @@ public class Robot {
         lift.setPower(0);
     }
 
+    public void initLift(){
+
+        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift(5);
+        lift.setPower(1);
+    }
+
+    public void jewelDeploy (){
+        jewel.setPosition(90);
+        sleep(1000);
+        jewel.setPosition(0);
+    }
+
+    public void turn70counterclockwise(){
+
+    }
+
     public DcMotor getLeft(){
         return left;
     }
@@ -241,3 +275,11 @@ public class Robot {
     }
 
 }
+         
+
+
+
+
+
+
+
