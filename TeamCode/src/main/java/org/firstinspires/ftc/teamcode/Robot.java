@@ -140,22 +140,56 @@ jewel = hardwareMap.get(Servo.class, "jewel");
         right.setPower(0);
     }
 
-    public void dropOff(){
+    public void forwardDropOff(){
+
+        forward(24);
 
         double diameter = 15;
-        double circumference = Math.PI * diameter;
+        double circumference = Math.PI * diameter * 2;
 
         double v = 90 / 360.0 * circumference * intoTicks;
         int position = (int) v;
         left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         left.setTargetPosition(position);
+
+        collect.setPower(0);
+        lift(11);
         left.setPower(0.75);
         forward(5);
         collect.setPower(-1);
         sleep(2000);
         left.setTargetPosition(0);
+        collect.setPower(1);
+        
+        backward(24);
     }
+
+    public void backwardDropOff(){
+
+        backward(24);
+
+        double diameter = 15;
+        double circumference = Math.PI * diameter * 2;
+
+        double v = 90 / 360.0 * circumference * intoTicks;
+        int position = (int) v;
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        left.setTargetPosition(position);
+
+        collect.setPower(0);
+        lift(11);
+        left.setPower(0.75);
+        forward(5);
+        collect.setPower(-1);
+        sleep(2000);
+        left.setTargetPosition(0);
+        collect.setPower(1);
+
+        forward(24);
+    }
+
     private void sleep(int milliseconds) {
         try {
             Thread.sleep(milliseconds);
@@ -216,13 +250,13 @@ jewel = hardwareMap.get(Servo.class, "jewel");
 
     public boolean isBeaconThere(){
         if (sensorDistance.getDistance(DistanceUnit.CM) <= 15){
-            telemetry.addData("Is Beakon There? ", "true");
+            telemetry.addData("Is Beacon There? ", "true");
             telemetry.update();
 
             return true;
         }
         else {
-            telemetry.addData("Is Beakon There?", "false");
+            telemetry.addData("Is Beacon There?", "false");
             telemetry.update();
 
 
@@ -254,17 +288,22 @@ jewel = hardwareMap.get(Servo.class, "jewel");
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift(5);
         lift.setPower(1);
+        while (lift.isBusy()){
+
+        }
     }
 
     public void jewelDeploy (){
-        jewel.setPosition(90);
-        sleep(7000);
+        jewel.setPosition(0);
+        sleep(3000);
+        jewel.setPosition(1);
+        sleep(500);
     }
 
     public void turn70counterclockwise(){
         double diameter = 15;
         double circumference = Math.PI * diameter;
-        int position = (int) (89 / 360.0 * circumference * intoTicks);
+        int position = (int) (70 / 360.0 * circumference * intoTicks);
         right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         right.setTargetPosition(position);
@@ -274,6 +313,10 @@ jewel = hardwareMap.get(Servo.class, "jewel");
         }
     }
 
+    public void initServo(){
+        jewel.setPosition(1);
+    }
+
     public DcMotor getLeft(){
         return left;
     }
@@ -281,6 +324,8 @@ jewel = hardwareMap.get(Servo.class, "jewel");
     public DcMotor getRight(){
         return right;
     }
+
+    public void collect() { collect.setPower(1); }
 
 }
          
